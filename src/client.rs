@@ -67,7 +67,7 @@ impl Client {
     /// # Errors
     ///
     /// Will return an error if the http client cannot be initalized.
-    pub fn new(base_url: &str, access_token: &str, timeout: Duration) -> Result<Client, Error> {
+    pub fn new(base_url: &str, access_token: &str, timeout: Duration, client_id: Option<int>) -> Result<Client, Error> {
         let url = Url::parse(base_url).map_err(|_| Error::new("Could not parse base url"))?;
         let http_client = ReqwestClient::builder()
             .cookie_store(true)
@@ -80,7 +80,7 @@ impl Client {
             http_client,
             base_url: url,
             access_token: access_token.to_owned(),
-            client_id: None,
+            client_id: client_id,
             cookies: vec![],
             actual_retries: 0,
             max_retries: 1,
